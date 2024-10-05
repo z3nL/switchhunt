@@ -13,7 +13,7 @@ import datetime
 # Set up app and MongoDB connection
 app = Flask(__name__)
 if not load_dotenv():
-    print("---\nDid you make a .env file and add DATABASE_URL to it? -Zen\n---\n")
+    print("---\nYou are NOT locked in...\nDid you make a .env file and add DATABASE_URL to it? -Zen\n---\n")
 database_url = os.getenv('DATABASE_URL')
 client = MongoClient(database_url)
 db = client['Squad']
