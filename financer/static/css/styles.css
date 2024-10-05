@@ -1,0 +1,35 @@
+<span style="font-family: verdana, geneva, sans-serif;">/*  import google fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+*{
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body{
+  display: flex;
+}
+.sidebar{
+    position: sticky;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 240px;
+    height: 100vh;
+    padding: 0 1.7rem;
+    color: #c61818;
+    overflow: hidden;
+    transition: all 0.5s linear;
+    background:  rgba(113, 99, 186, 255);
+
+}
+.logo {
+    height: 100px;
+    padding: 24px;
+}
+.menu {
+
+}
