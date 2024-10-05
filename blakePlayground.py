@@ -14,10 +14,11 @@ def clean_extracted_text(text):
     
     return cleaned_text
 
-def parse_pdf_transactions(file_path):
+def parse_pdf_transactions(file_path, transactions):
     # Initialize an empty list to hold the transaction data
-    transactions = []
-
+    #transactions = []
+    '''fuck everything above this -zen
+    '''
     # Open the PDF file using pdfplumber
     with pdfplumber.open(file_path) as pdf:
         text = ""
@@ -36,11 +37,7 @@ def parse_pdf_transactions(file_path):
     # Find all matches in the cleaned text
     matches = re.findall(pattern, cleaned_text)
 
-    # Print out the matches for debugging
-    print("\n--- TRANSACTIONS DETECTED (ignoring card numbers) ---\n")
-    for match in matches:
-        print(match)
-
+    # Print 
     # Process each match and store it in the transactions list
     for match in matches:
         date, description, _, amount = match  # We ignore the card number (the third captured group)
@@ -55,14 +52,22 @@ def parse_pdf_transactions(file_path):
             "amount": amount
         })
 
-    return transactions
+    #return transactions
 
 # Example usage
+transactions = []
+
 file_path = 'CreditStatement.pdf'  # Replace with the actual path to your PDF
-transactions = parse_pdf_transactions(file_path)
+parse_pdf_transactions(file_path, transactions)
+
+'''
+print("\n--- FINAL PARSED TRANSACTIONS (ignoring card numbers, minus sign removed) ---\n")
+for transaction in transactions:
+    print(transaction)
+'''
 
 file_path = 'bankstatement.pdf'  # Replace with the actual path to your PDF
-transactions = parse_pdf_transactions(file_path)
+parse_pdf_transactions(file_path, transactions)
 
 # Print the final parsed transactions
 print("\n--- FINAL PARSED TRANSACTIONS (ignoring card numbers, minus sign removed) ---\n")
