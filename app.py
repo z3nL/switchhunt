@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
-from flask_mysqldb import MySQL
-import MySQLdb.cursors
+# from flask_mysqldb import MySQL
+# import MySQLdb.cursors
 import os
-import openai
+# import openai
 from dotenv import load_dotenv
 import ast
 import asyncio
