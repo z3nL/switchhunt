@@ -1,11 +1,10 @@
-<span style="font-family: verdana, geneva, sans-serif;">/*  import google fonts */
+/*  import google fonts */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
-*{
+* {
   margin: 0;
   padding: 0;
   outline: none;
   border: none;
-  text-decoration: none;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
@@ -20,16 +19,28 @@ body{
     width: 240px;
     height: 100vh;
     padding: 0 1.7rem;
-    color: #c61818;
+    color: #fff;
     overflow: hidden;
     transition: all 0.5s linear;
-    background:  rgba(113, 99, 186, 255);
+    background: rgba(42, 197, 135, 0.997);
 
 }
 .logo {
-    height: 100px;
-    padding: 24px;
+    height: 150px;
+    padding: 150px;
 }
 .menu {
+  height: 88%;
+  position: relative;
+  list-style: none;
+  padding: 0;
 
 }
+.menu li {
+  padding: 1rem;
+  margin: 8px 0;
+  border-radius: 8px;
+  transition: all 0.5s ease-in-out;
+}
+
+
