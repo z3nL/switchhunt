@@ -1,7 +1,6 @@
 import re
 import pdfplumber
 import pandas as pd
-import ssl
 import matplotlib.pyplot as plt
 from pymongo import MongoClient
 import os
@@ -15,7 +14,12 @@ import time
 # Input DB upload choice
 choiceDB = input("Upload to DB? Y = Yes: ")
 
+<<<<<<< HEAD
 # Function to clean extracted text
+=======
+
+# Function to clean the extracted text
+>>>>>>> c1caf43ef9d0003bc6292edc4e5cc52a286eee2b
 def clean_extracted_text(text):
     cleaned_text = re.sub(r'([A-Za-z])(\d)', r'\1 \2', text)
     cleaned_text = re.sub(r'(\d)([A-Za-z])', r'\1 \2', cleaned_text)
@@ -100,6 +104,7 @@ df['description_cleaned'] = df['description'].str.lower().str.replace('[^a-zA-Z0
 df['date'] = pd.to_datetime(df['date'], format='%m/%d')
 df['amount'] = pd.to_numeric(df['amount'], errors='coerce').fillna(0)
 
+<<<<<<< HEAD
 # Ensure 'transaction_type' stays as string, no encoding to numbers
 if 'transaction_type' not in df.columns:
     raise KeyError("'transaction_type' column is missing.")
@@ -150,3 +155,39 @@ def monitor_fine_tuning_v2(fine_tune_id):
             break
 
 monitor_fine_tuning_v2(fine_tune_id)
+=======
+'''---------------------------------------------------PIE CHART---------------------------------------------------'''
+
+
+def create_pie(dataframe, exclude_categories=None, output_file="pie_chart.png"):
+    # Group by transaction type and sum the amounts
+    pie_data = dataframe.groupby('transaction_type')['amount'].sum()
+
+    # Exclude specified categories if provided
+    if exclude_categories:
+        pie_data = pie_data[~pie_data.index.isin(exclude_categories)]
+
+    # Check if there's any data left to plot
+    if pie_data.empty:
+        print("No data available to display.")
+        return
+
+    # Create a pie chart
+    plt.figure(figsize=(8, 6))
+    # Set font properties
+    font_properties = {'weight': 'bold', 'size': 12}  # Bold font
+
+    # Create the pie chart without percentages
+    plt.pie(pie_data, labels=pie_data.index, labeldistance=1.1, startangle=140, textprops=font_properties)
+    plt.title('Transaction Amounts by Type', fontsize=14, fontweight='bold')  # Bold title
+    plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular
+
+    # Save the pie chart as a PNG file
+    plt.savefig(output_file, format='png', bbox_inches='tight')
+
+    # Show the pie chart
+    plt.show()
+
+
+create_pie(df, exclude_categories=[], output_file="my_pie_chart.png")
+>>>>>>> c1caf43ef9d0003bc6292edc4e5cc52a286eee2b

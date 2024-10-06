@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Motion Finance: {{category}}</title>
+  <link rel="stylesheet" href="/static/css/specific.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo"></div>
+        <ul class="menu">
+            <li class="active">
+                <a href="/test-connection">
+                    <i class="fas fa-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="/test-connection">
+                    <i class="fas fa-robot"></i>
+                    <span>BudgetBot</span>
+                </a>
+            </li>
+            <li>
+                <a href="/test-connection">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+            <li class="logout">
+                <a href="/logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main--content">
+        <div class="header--wrapper">
+          <div class="header--title">
+            <h2>{{category}}</h2>
+          </div> 
+        </div>
+
+        <div class="card-container">
+            <h3 class="main--title">{{"$%.2f" | format(tsac_total)}}</h3>
+            <h3 class="main--title">This Month</h3>
+            <img src="/static/images/specpie.png", style="width: 50%; height: auto;">
+        </div>
+
+    <div class="main--content">
+        <div class="header--wrapper">
+            <div class="header--title">
+            <h2>BudgetBot Tip: uhhhhhhhh</h2>
+            </div> 
+        </div>
+
+        <div class="tabular--wrapper">
+            <h3 class="main--title">{{category}} Transactions</h3>
+            <select id="tableToggle" onchange="toggleTable()">
+                <option value="hide">Select an option</option>
+                <option value="show">Show Transactions</option>
+                <option value="hide">Hide Transactions</option>
+            </select>
+            <div class="table-container">
+                <table id="transactionTable">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    {% for tsac in tsac_data %}
+                        <tbody>
+                            <td>{{tsac['date']}}</td>
+                            <td>{{tsac['description']}}</td>
+                            <td>{{"$%.2f" | format(tsac['amount'])}}</td>
+                            <td>{{tsac['transaction_type']}}</td>
+                            <td>Complete</td>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTable() {
+            const dropdown = document.getElementById('tableToggle');
+            const table = document.getElementById('transactionTable');
+    
+            if (dropdown.value === 'show') {
+                table.style.display = 'table'; // Show the table
+            } else {
+                table.style.display = 'none'; // Hide the table
+            }
+        }
+    </script>
+
+</body>
+</html>

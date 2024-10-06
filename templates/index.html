@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dashboard Design | By Code Info</title>
+  <title>Motion Finance: Dashboard</title>
   <link rel="stylesheet" href="/static/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 </head>
@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li class="logout">
-                <a href="/test-connection">
+                <a href="/logout">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </a>
@@ -40,120 +40,132 @@
     <div class="main--content">
         <div class="header--wrapper">
           <div class="header--title">
-            <span>Home</span>
             <h2>Dashboard</h2>
           </div> 
-          <div class="user--info">
-            <div class="search--box">
-            <i class="fa-solid fa-search"></i>
-            <input type="text" placeholder="Search">
-            </div>
-            <img src="../static/images/grey.png" alt=""/> 
-        </div>
         </div>
 
         <div class="card-container">
-            <h3 class="main--title">Today's Spending</h3>
+            <h3 class="main--title">This Month's Spending</h3>
+            <img src = "/static/images/financepie.png">
             <div class="card--wrapper">
-                <a href="/test-connection" class="card-link">
+                <a href="/specific?category=Automotive/Gas" class="card-link">
                     <div class="payment--card light-yellow">
                         <div class="card--header">
                             <div class="amount">
                                 <span class="title">Automotive/Gas</span>
-                                <span class="amount--value">$500.00</span>
+                                <span class="amount--value">{{"$%.2f" | format(transaction_totals.get('Automotive/Gas'))}}</span>
                             </div>
                             <i class="fas fa-car-side icon"></i>
                         </div>
-                        <span class="card--detail"> **** **** **** 1234</span>
+                        <span class="card--detail"> **** **** **** 1738</span>
                     </div>
                 </a>
-                <a href="/test-connection" class="card-link">
+                <a href="/specific?category=Entertainment" class="card-link">
                     <div class="payment--card light-yellow">
                         <div class="card--header">
                             <div class="amount">
                                 <span class="title">Entertainment</span>
-                                <span class="amount--value">$500.00</span>
+                                <span class="amount--value">{{"$%.2f" | format(transaction_totals.get('Entertainment'))}}</span>
                             </div>
                             <i class="fas fa-dollar-sign icon"></i>
                         </div>
-                        <span class="card--detail"> **** **** **** 1234</span>
+                        <span class="card--detail"> **** **** **** 1738</span>
                     </div>
                 </a>
-                <a href="/test-connection" class="card-link">
+                <a href="/specific?category=Rent/Utility" class="card-link">
                     <div class="payment--card light-yellow">
                         <div class="card--header">
                             <div class="amount">
                                 <span class="title">Rent/Utilities</span>
-                                <span class="amount--value">$500.00</span>
+                                <span class="amount--value">{{"$%.2f" | format(transaction_totals.get('Rent/Utility'))}}</span>
                             </div>
                             <i class="fas fa-house-chimney-crack icon"></i>
                         </div>
-                        <span class="card--detail"> **** **** **** 1234</span>
+                        <span class="card--detail"> **** **** **** 1738</span>
                     </div>
                 </a>
-                <a href="/test-connection" class="card-link">
+                <a href="/specific?category=Food" class="card-link">
                     <div class="payment--card light-yellow">
                         <div class="card--header">
                             <div class="amount">
                                 <span class="title">Food</span>
-                                <span class="amount--value">$500.00</span>
+                                <span class="amount--value">{{"$%.2f" | format(transaction_totals.get('Food'))}}</span>
                             </div>
                             <i class="fas fa-pizza-slice icon"></i>
                         </div>
-                        <span class="card--detail"> **** **** **** 1234</span>
+                        <span class="card--detail"> **** **** **** 1738</span>
                     </div>
                 </a>
-                <a href="/test-connection" class="card-link">
+                <a href="/specific?category=Supplies" class="card-link">
                     <div class="payment--card light-yellow">
                         <div class="card--header">
                             <div class="amount">
                                 <span class="title">Supplies</span>
-                                <span class="amount--value">$500.00</span>
+                                <span class="amount--value">{{"$%.2f" | format(transaction_totals.get('Supplies'))}}</span>
                             </div>
                             <i class="fas fa-truck-loading icon"></i>
                         </div>
-                        <span class="card--detail"> **** **** **** 1234</span>
+                        <span class="card--detail"> **** **** **** 1738</span>
                     </div>
                 </a>
-                <a href="/test-connection" class="card-link">
+                <a href="/specific?category=Medical" class="card-link">
                     <div class="payment--card light-yellow">
                         <div class="card--header">
                             <div class="amount">
                                 <span class="title">Medical</span>
-                                <span class="amount--value">$500.00</span>
+                                <span class="amount--value">{{"$%.2f" | format(transaction_totals.get('Medical'))}}</span>
                             </div>
                             <i class="fas fa-hospital-user icon"></i>
                         </div>
-                        <span class="card--detail"> **** **** **** 1234</span>
+                        <span class="card--detail"> **** **** **** 1738</span>
                     </div>
                 </a>
             </div>
         </div>
         <div class="tabular--wrapper">
-            <h3 class="main--title">Finance Data</h3>
+            <h3 class="main--title">All Transactions</h3>
+            <select id="tableToggle" onchange="toggleTable()">
+                <option value="hide">Select an option</option>
+                <option value="show">Show Transactions</option>
+                <option value="hide">Hide Transactions</option>
+            </select>
             <div class="table-container">
-                <table>
+                <table id="transactionTable">
                     <thead>
                         <tr>
                             <th>Data</th>
-                            <th>Transaction Type</th>
                             <th>Description</th>
                             <th>Amount</th>
                             <th>Category</th>
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <td>10-5-2024</td>
-                        <td>Credit Card</td>
-                        <td>AMC</td>
-                        <td>$100</td>
-                        <td>Entertainment</td>
-                        <td>Pending</td>
-                    </tbody>
+                    {% for tsac in allTsacs %}
+                        <tbody>
+                            <td>{{tsac['date']}}</td>
+                            <td>{{tsac['description']}}</td>
+                            <td>{{"$%.2f" | format(tsac['amount'])}}</td>
+                            <td>{{tsac['transaction_type']}}</td>
+                            <td>Complete</td>
+                        </tbody>
+                    {% endfor %}
                 </table>
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleTable() {
+            const dropdown = document.getElementById('tableToggle');
+            const table = document.getElementById('transactionTable');
+    
+            if (dropdown.value === 'show') {
+                table.style.display = 'table'; // Show the table
+            } else {
+                table.style.display = 'none'; // Hide the table
+            }
+        }
+    </script>
+
 </body>
 </html>
