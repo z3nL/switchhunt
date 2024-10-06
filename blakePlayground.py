@@ -1,14 +1,35 @@
 import re
 import pdfplumber
 import pandas as pd
+from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
+
 
 # Function to clean the extracted text
 def clean_extracted_text(text):
     cleaned_text = re.sub(r'([A-Za-z])(\d)', r'\1 \2', text)  # Add space between letters and numbers
     cleaned_text = re.sub(r'(\d)([A-Za-z])', r'\1 \2', cleaned_text)  # Add space between numbers and letters
     cleaned_text = re.sub(r'(\d{4})([-\d])', r'\1 \2', cleaned_text)  # Insert spaces between card numbers and amounts
-    cleaned_text = re.sub(r'([A-Za-z0-9 ,\.\*\-\n]+)\n([A-Za-z0-9 ,\.\*\-\n]+)', r'\1 \2', cleaned_text)  # Handle multi-line descriptions
+    cleaned_text = re.sub(r'([A-Za-z0-9 ,\.\*\-\n]+)\n([A-Za-z0-9 ,\.\*\-\n]+)', r'\1 \2',
+                          cleaned_text)  # Handle multi-line descriptions
     return cleaned_text
+
+
+# Function to categorize the transaction based on description
+def categorize_transaction(description):
+    description = description.lower()
+
+    # Categories based on keywords in the description
+    if any(keyword in description for keyword in ["payment", "deposit", "refund", "income"]):
+        return "Income"
+    elif any(keyword in description for keyword in ["grocery", "food", "restaurant", "gas", "fuel", "shopping"]):
+        return "Expense"
+    elif any(keyword in description for keyword in ["transfer", "cash", "balance"]):
+        return "Transfer"
+    else:
+        return "Other"
+
 
 # Function to parse PDF transactions
 def parse_pdf_transactions(file_path, transactions):
@@ -29,17 +50,21 @@ def parse_pdf_transactions(file_path, transactions):
         date, description, _, amount = match
         amount = abs(float(amount.replace(",", "")))  # Convert to float and use abs() to remove minus
         description = description.replace('\n', ' ').strip()
+        transaction_type = categorize_transaction(description)  # Add transaction type
         transactions.append({
             "date": date,
             "description": description,
-            "amount": amount
+            "amount": amount,
+            "transaction_type": transaction_type  # Add the transaction type to the data
         })
 
-# Filter out invalid dates or unwanted descriptions like interest charges
+
+# Function to filter out invalid dates
 def is_valid_date(date):
     return bool(re.match(r'\d{2}/\d{2}', date))
 
-# Filter out transactions with unwanted descriptions (e.g., "Interest", "Fee", etc.)
+
+# Function to filter out transactions with unwanted descriptions or amounts
 def is_valid_transaction(description, amount):
     # List of keywords to exclude
     unwanted_keywords = ["Interest", "Fee", "Charge", "Balance Transfer", "Cash Advance", "- 0 -", "Payment"]
@@ -50,22 +75,39 @@ def is_valid_transaction(description, amount):
     # Exclude transactions containing unwanted keywords or amounts
     return not any(keyword in description for keyword in unwanted_keywords) and amount not in unwanted_amounts
 
+
 # Example usage
 transactions = []
 
-file_path = 'CreditStatement.pdf'  # Replace with your PDF path
-parse_pdf_transactions(file_path, transactions)
-
-file_path = "bankstatement.pdf"  # Replace with your PDF path
-parse_pdf_transactions(file_path, transactions)
+# Parse transactions from PDF
+file_paths = ['20240914-statements-8356-.pdf']  # List of your PDF files
+for file_path in file_paths:
+    parse_pdf_transactions(file_path, transactions)
 
 # Filter out invalid transactions
 filtered_transactions = [
     t for t in transactions if is_valid_date(t['date']) and is_valid_transaction(t['description'], t['amount'])
 ]
 
-# Create a DataFrame
+# Create a DataFrame from the filtered transactions
 df = pd.DataFrame(filtered_transactions)
 
-# Print the DataFrame
+# Print the DataFrame to see the output including the transaction type
 print(df)
+
+'''-------------------------------------------CONNECT TO DATABASE---------------------------------------------------'''
+if not load_dotenv():
+    print("---\nNo env file!\n---\n")
+database_url = os.getenv('DATABASE_URL')
+
+# Connect to MongoDB
+client = MongoClient(database_url)
+db = client["Learning"]  # Replace with your database name
+collection = db["Learning_Collection"]  # Replace with your collection name
+
+# Insert the filtered transactions into MongoDB
+if filtered_transactions:
+    collection.insert_many(filtered_transactions)
+    print(f"Inserted {len(filtered_transactions)} transactions into MongoDB.")
+else:
+    print("No transactions to insert.")
