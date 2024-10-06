@@ -15,8 +15,8 @@ app = Flask(__name__)
 
 if not load_dotenv():
     print("---\nNo env file!\n---\n")
-    
-chatbot.api_key = os.getenv('OPENAI_API_KEY')
+
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 database_url = os.getenv('DATABASE_URL')
 client = MongoClient(database_url)
@@ -55,15 +55,17 @@ def home():
 @app.route('/specific')
 async def specific():
     if ('active' in session and session['active'] == 1):
+        username = session['username']  
         category = request.args.get('category')
         tsac_data = session['transaction_data'][f"{category}_transactions"]
         for tsac in tsac_data:
-            tsac['description'] = await extractCo(tsac['description'], chatbot)
+            tsac['description'] = await extractCo(tsac['description'], openai)
+        tip = await bBotTip(tsac, openai)
         tsac_total = session['transaction_totals'][category]
         df = pd.DataFrame(tsac_data)
         await create_pie(df, 'description', exclude_categories=[], output_file="./static/images/specpie.png")
-        return render_template('specific.html', tsac_data=tsac_data, category=category, \
-                                                tsac_total=tsac_total)
+        return render_template('specific.html', tsac_data=tsac_data, category=category, username=username,\
+                                                tip=tip, tsac_total=tsac_total)
     else:
         return redirect(url_for('loginpg'))
 
