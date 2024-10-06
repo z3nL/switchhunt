@@ -127,16 +127,33 @@ for document in documents:
 df = pd.DataFrame(data_list)
 
 '''---------------------------------------------------PIE CHART---------------------------------------------------'''
-# Group by transaction type and sum the amounts
-pie_data = df.groupby('transaction_type')['amount'].sum()
+'''---------------------------------------------------PIE CHART---------------------------------------------------'''
+import matplotlib.pyplot as plt
 
-# Create a pie chart
-plt.figure(figsize=(8, 6))
-# Set font properties
-font_properties = {'weight': 'bold', 'size': 12}  # Bold font
 
-# Create the pie chart without percentages
-plt.pie(pie_data, labels=pie_data.index, labeldistance=1.1, startangle=140, textprops=font_properties)
-plt.title('Transaction Amounts by Type', fontsize=14, fontweight='bold')  # Bold title
-plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular
-plt.show()
+def create_pie(dataframe, exclude_categories=None):
+    # Group by transaction type and sum the amounts
+    pie_data = dataframe.groupby('transaction_type')['amount'].sum()
+
+    # Exclude specified categories if provided
+    if exclude_categories:
+        pie_data = pie_data[~pie_data.index.isin(exclude_categories)]
+
+    # Check if there's any data left to plot
+    if pie_data.empty:
+        print("No data available to display.")
+        return
+
+    # Create a pie chart
+    plt.figure(figsize=(8, 6))
+    # Set font properties
+    font_properties = {'weight': 'bold', 'size': 12}  # Bold font
+
+    # Create the pie chart without percentages
+    plt.pie(pie_data, labels=pie_data.index, labeldistance=1.1, startangle=140, textprops=font_properties)
+    plt.title('Transaction Amounts by Type', fontsize=14, fontweight='bold')  # Bold title
+    plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular
+    plt.show()
+
+
+create_pie(df, exclude_categories=[])
