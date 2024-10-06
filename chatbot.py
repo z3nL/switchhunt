@@ -3,9 +3,9 @@ import json
 import os
 from dotenv import load_dotenv
 
+# Load environment variables
 if not load_dotenv():
     print("---\nNo env file!\n---\n")
-os.getenv('OPENAI_API_KEY')
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
 # Function to load transactions from the JSONL file
@@ -30,32 +30,49 @@ def load_transactions_from_jsonl(file_path):
     
     return transactions
 
-# Function to generate chatbot response
-def chatbot_response(user_input, transactions_info):
-    # Extended keyword list to include more queries related to files, data, and transactions
-    keywords = ["transactions", "show me my transactions", "recent transactions", "file", "data", "history", "records", "expenses", "purchases", "transaction history", "bank history", "spending"]
+# Function to filter transactions based on user input
+def filter_transactions(user_input, transactions):
+    relevant_transactions = []
     
-    # Check if the user is asking about transactions or related topics
-    if any(keyword in user_input.lower() for keyword in keywords):
-        combined_input = f"{user_input}\nHere are some recent transactions: {transactions_info}"
+    # Filter transactions based on the keywords in the user input
+    for transaction in transactions:
+        if any(keyword.lower() in transaction['messages'][0]['content'].lower() for keyword in user_input.split()):
+            relevant_transactions.append(transaction)
+    
+    return relevant_transactions
+
+# Function to generate chatbot response with all filtered transactions
+def chatbot_response(conversation_history, user_input, transactions):
+    # Filter transactions based on the user input
+    relevant_transactions = filter_transactions(user_input, transactions)
+    
+    # Convert the relevant transactions into a summary string
+    if relevant_transactions:
+        transactions_info = "\n".join([f"Transaction: {t['messages'][0]['content']}, Type: {t['messages'][1]['content']}" for t in relevant_transactions])
     else:
-        combined_input = user_input  # Don't include transaction info unless explicitly asked
-    
+        transactions_info = "No relevant transactions found."
+
+    # Add the current user input to the conversation history
+    conversation_history.append({"role": "user", "content": user_input})
+
+    # Prepare a system message with all the relevant transactions
+    system_message = {"role": "system", "content": f"Here are all the relevant transactions: {transactions_info}"}
+
     try:
-        # Call the OpenAI API with a prompt
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": combined_input}
-            ],
-            max_tokens=150,
-            n=1,
-            stop=None,
+        # Generate the final chatbot response with a large enough token limit
+        final_response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=conversation_history + [system_message],
+            max_tokens=2048,  # Set max tokens high to return as many transactions as possible
             temperature=0.7
         )
-        # Extracting the chatbot response
-        return response['choices'][0]['message']['content']
+        
+        # Add the bot's response to the conversation history
+        bot_message = final_response['choices'][0]['message']['content']
+        conversation_history.append({"role": "assistant", "content": bot_message})
+        
+        return bot_message
+    
     except Exception as e:
         print(f"Error calling OpenAI API: {e}")
         return "Sorry, something went wrong when trying to process your request."
@@ -69,8 +86,8 @@ if __name__ == "__main__":
         print("No transactions loaded. Exiting...")
         exit()
     
-    # Convert the transaction info into a summary or a string
-    transactions_info = "\n".join([f"Transaction: {t['messages'][0]['content']}, Type: {t['messages'][1]['content']}" for t in transactions[:]])  # For brevity, use first 5 transactions
+    # Maintain conversation history
+    conversation_history = [{"role": "system", "content": "You are a helpful assistant."}]
 
     # Proceed with chatbot interactions
     print("Chatbot is ready! Type 'exit' to end.")
@@ -79,6 +96,6 @@ if __name__ == "__main__":
         if user_input.lower() == 'exit':
             break
         
-        # Only pass transaction info if the user explicitly asks for it
-        bot_response = chatbot_response(user_input, transactions_info)
+        # Pass the conversation history, user input, and transactions to the chatbot response function
+        bot_response = chatbot_response(conversation_history, user_input, transactions)
         print(f"Bot: {bot_response}")
