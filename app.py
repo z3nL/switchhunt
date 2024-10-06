@@ -1,24 +1,29 @@
-from flask import Flask, render_template, send_file, request, redirect, url_for, flash, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 # from flask_mysqldb import MySQL
 # import MySQLdb.cursors
 import os
 # import openai
 from dotenv import load_dotenv
-import configparser
 from pymongo import MongoClient
-import ast
-import asyncio
-import datetime
+import pandas as pd
+from helpers import create_pie
+from helpers import extractCo
+import openai
 
-# Set up app and MongoDB connection
+# Set up app, OpenAI, and MongoDB connection
 app = Flask(__name__)
+
 if not load_dotenv():
     print("---\nNo env file!\n---\n")
+    
+openai.api_key = os.getenv('OPENAI_API_KEY')
+
 database_url = os.getenv('DATABASE_URL')
 client = MongoClient(database_url)
 db = client['UserInfo']
 logins = db['logins']
 allTsacs = []
+tsac_data = []
 
 # Default -> redir to login
 @app.route('/')
@@ -46,14 +51,33 @@ def home():
     else:
         return redirect(url_for('loginpg'))
 
+# Specific category page
+@app.route('/specific')
+async def specific():
+    if ('active' in session and session['active'] == 1):
+        category = request.args.get('category')
+        tsac_data = session['transaction_data'][f"{category}_transactions"]
+        for tsac in tsac_data:
+            tsac['description'] = await extractCo(tsac['description'], openai)
+        tsac_total = session['transaction_totals'][category]
+        df = pd.DataFrame(tsac_data)
+        await create_pie(df, 'description', exclude_categories=[], output_file="./static/images/specpie.png")
+        return render_template('specific.html', tsac_data=tsac_data, category=category, \
+                                                tsac_total=tsac_total)
+    else:
+        return redirect(url_for('loginpg'))
+
 @app.route('/MotionFinance/login', methods=['POST'])
 async def signIn():
+    if ('active' in session and session['active'] == 1):
+        return redirect(url_for('home'))
+    
     username = request.form['username']
     password = request.form['password']
 
-    # TODO Query the database!!
     query = {"username":username}
     user = logins.find_one(query)
+
     if (user and user['password'] == password):
         session['active'] = 1
         session['username'] = username
@@ -61,7 +85,7 @@ async def signIn():
         db = client['Learning']
         entries = db['Learning_Collection']
         transaction_data = {}; transaction_totals = {}
-        trTypes = ["Automotive/Gas", "Entertainment", "Rent/Utilities", "Food", "Supplies", "Medical"]
+        trTypes = ["Automotive/Gas", "Entertainment", "Rent/Utility", "Food", "Supplies", "Medical"]
         for type in trTypes:
             transactions = list(entries.find({"transaction_type":type}))
             # Convert ObjectId to string and store transactions
@@ -79,6 +103,8 @@ async def signIn():
         allTsacs =  [
             {**tsac, "_id": str(tsac["_id"])} for tsac in tsacs
         ]
+        df = pd.DataFrame(allTsacs)
+        await create_pie(df, 'transaction_type', exclude_categories=[], output_file="./static/images/financepie.png")
         
         return redirect(url_for('home'))
     else:
@@ -86,9 +112,15 @@ async def signIn():
         
     return redirect(url_for('loginpg'))
 
+# Sign out and remove png
 @app.route('/logout')
 def logout():
     session.clear()
+    try:
+        os.remove("./static/images/financepie.png")
+        os.remove("./static/images/specpie.png")
+    except FileNotFoundError:
+        pass  
     return redirect(url_for('loginpg'))  
 
 # Connection testing

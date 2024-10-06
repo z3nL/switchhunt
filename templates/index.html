@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dashboard Design | By Code Info</title>
+  <title>Motion Finance: Dashboard</title>
   <link rel="stylesheet" href="/static/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 </head>
@@ -40,15 +40,15 @@
     <div class="main--content">
         <div class="header--wrapper">
           <div class="header--title">
-            <span>Home</span>
             <h2>Dashboard</h2>
           </div> 
         </div>
 
         <div class="card-container">
             <h3 class="main--title">This Month's Spending</h3>
+            <img src = "/static/images/financepie.png">
             <div class="card--wrapper">
-                <a href="/test-connection" class="card-link">
+                <a href="/specific?category=Automotive/Gas" class="card-link">
                     <div class="payment--card light-yellow">
                         <div class="card--header">
                             <div class="amount">
@@ -57,10 +57,10 @@
                             </div>
                             <i class="fas fa-car-side icon"></i>
                         </div>
-                        <span class="card--detail"> **** **** **** 1234</span>
+                        <span class="card--detail"> **** **** **** 1738</span>
                     </div>
                 </a>
-                <a href="/test-connection" class="card-link">
+                <a href="/specific?category=Entertainment" class="card-link">
                     <div class="payment--card light-yellow">
                         <div class="card--header">
                             <div class="amount">
@@ -69,22 +69,22 @@
                             </div>
                             <i class="fas fa-dollar-sign icon"></i>
                         </div>
-                        <span class="card--detail"> **** **** **** 1234</span>
+                        <span class="card--detail"> **** **** **** 1738</span>
                     </div>
                 </a>
-                <a href="/test-connection" class="card-link">
+                <a href="/specific?category=Rent/Utility" class="card-link">
                     <div class="payment--card light-yellow">
                         <div class="card--header">
                             <div class="amount">
                                 <span class="title">Rent/Utilities</span>
-                                <span class="amount--value">{{"$%.2f" | format(transaction_totals.get('Rent/Utilities'))}}</span>
+                                <span class="amount--value">{{"$%.2f" | format(transaction_totals.get('Rent/Utility'))}}</span>
                             </div>
                             <i class="fas fa-house-chimney-crack icon"></i>
                         </div>
-                        <span class="card--detail"> **** **** **** 1234</span>
+                        <span class="card--detail"> **** **** **** 1738</span>
                     </div>
                 </a>
-                <a href="/test-connection" class="card-link">
+                <a href="/specific?category=Food" class="card-link">
                     <div class="payment--card light-yellow">
                         <div class="card--header">
                             <div class="amount">
@@ -93,10 +93,10 @@
                             </div>
                             <i class="fas fa-pizza-slice icon"></i>
                         </div>
-                        <span class="card--detail"> **** **** **** 1234</span>
+                        <span class="card--detail"> **** **** **** 1738</span>
                     </div>
                 </a>
-                <a href="/test-connection" class="card-link">
+                <a href="/specific?category=Supplies" class="card-link">
                     <div class="payment--card light-yellow">
                         <div class="card--header">
                             <div class="amount">
@@ -105,10 +105,10 @@
                             </div>
                             <i class="fas fa-truck-loading icon"></i>
                         </div>
-                        <span class="card--detail"> **** **** **** 1234</span>
+                        <span class="card--detail"> **** **** **** 1738</span>
                     </div>
                 </a>
-                <a href="/test-connection" class="card-link">
+                <a href="/specific?category=Medical" class="card-link">
                     <div class="payment--card light-yellow">
                         <div class="card--header">
                             <div class="amount">
@@ -123,7 +123,7 @@
             </div>
         </div>
         <div class="tabular--wrapper">
-            <h3 class="main--title">Transactions</h3>
+            <h3 class="main--title">All Transactions</h3>
             <select id="tableToggle" onchange="toggleTable()">
                 <option value="hide">Select an option</option>
                 <option value="show">Show Transactions</option>
@@ -144,7 +144,7 @@
                         <tbody>
                             <td>{{tsac['date']}}</td>
                             <td>{{tsac['description']}}</td>
-                            <td>{{tsac['amount']}}</td>
+                            <td>{{"$%.2f" | format(tsac['amount'])}}</td>
                             <td>{{tsac['transaction_type']}}</td>
                             <td>Complete</td>
                         </tbody>
