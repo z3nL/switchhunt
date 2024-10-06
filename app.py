@@ -1,8 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-# from flask_mysqldb import MySQL
-# import MySQLdb.cursors
 import os
-# import openai
 from dotenv import load_dotenv
 from pymongo import MongoClient
 import pandas as pd
