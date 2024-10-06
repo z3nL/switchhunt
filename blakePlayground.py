@@ -117,6 +117,16 @@ if filtered_transactions and choiceDB == 'Y':
 else:
     print("No transactions to insert.")
 
+'''-------------------------------------------GRAB FROM DATABASE---------------------------------------------------'''
+documents = collection.find()  # Fetch all documents
+data_list = []  # List to store the data
+for document in documents:
+    data_list.append(document)  # Append each document to the list
+df = pd.DataFrame(data_list)
+
+
+
+
 
 
 #machine learning start idk how to work this
