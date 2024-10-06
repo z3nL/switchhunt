@@ -153,7 +153,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import LabelEncoder
 import pandas as pd
 
-client = MongoClient('mongodb+srv://zen33:zen@squad.vab1r.mongodb.net/?retryWrites=true&w=majority&appName=Squad')
+if not load_dotenv():
+    print("---\nNo env file!\n---\n")
+database_url = os.getenv('DATABASE_URL')
+client = MongoClient(database_url)
 db = client['learning']
 collection = ['learning_collection']
 
