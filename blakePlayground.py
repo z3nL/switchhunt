@@ -1,10 +1,14 @@
 import re
 import pdfplumber
 import pandas as pd
-import ssl
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
+
+'''-------------------------------------------INPUT OUTPUT---------------------------------------------------'''
+choiceDB = input("Upload to DB? Y = Yes: ")
+
+
 
 
 # Function to clean the extracted text
@@ -102,12 +106,12 @@ if not load_dotenv():
 database_url = os.getenv('DATABASE_URL')
 
 # Connect to MongoDB
-client = MongoClient(database_url, ssl_cert_reqs=ssl.CERT_NONE)
+client = MongoClient(database_url)
 db = client["Learning"]  # Replace with your database name
 collection = db["Learning_Collection"]  # Replace with your collection name
 
 # Insert the filtered transactions into MongoDB
-if filtered_transactions:
+if filtered_transactions and choiceDB == 'Y':
     collection.insert_many(filtered_transactions)
     print(f"Inserted {len(filtered_transactions)} transactions into MongoDB.")
 else:
