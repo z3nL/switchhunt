@@ -10,6 +10,16 @@
 body{
   display: flex;
 }
+
+a {
+  text-decoration: none; /* Remove the underline */
+  color: inherit; /* Optional: Keeps the text color consistent */
+}
+
+a:hover {
+  text-decoration: none; /* Ensures no underline on hover */
+}
+
 .sidebar{
     position: sticky;
     top: 0;
