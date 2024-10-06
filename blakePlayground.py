@@ -1,6 +1,7 @@
 import re
 import pdfplumber
 import pandas as pd
+import ssl
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
@@ -101,7 +102,7 @@ if not load_dotenv():
 database_url = os.getenv('DATABASE_URL')
 
 # Connect to MongoDB
-client = MongoClient(database_url)
+client = MongoClient(database_url, ssl_cert_reqs=ssl.CERT_NONE)
 db = client["Learning"]  # Replace with your database name
 collection = db["Learning_Collection"]  # Replace with your collection name
 
