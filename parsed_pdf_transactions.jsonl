@@ -1,0 +1,21 @@
+{"messages": [{"role": "user", "content": "Transaction: Lyft *2 Rides 08-2 Help.Lyft.Com CA Card, 36.54"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: Uber *Trip San Francisco CA Card, 8.42"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: Ubr* Pending.Uber.CO San Francisco CA, 33.28"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: Ubr* Pending.Uber.CO San Francisco CA, 7.91"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: Chegg *Order 855-440-1323 CA Card, 15.95"}, {"role": "assistant", "content": "Entertainment"}]}
+{"messages": [{"role": "user", "content": "Transaction: Lyft *2 Rides 08-2 Help.Lyft.Com CA Card, 32.74"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: Spotify USA 877-7781 161 NY Card, 6.78"}, {"role": "assistant", "content": "Entertainment"}]}
+{"messages": [{"role": "user", "content": "Transaction: Lyft *2 Rides 08-3 Help.Lyft.Com CA Card, 36.7"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: Zelle Payment To Aaron Jpm 99 An 0 Tnhz, 67.0"}, {"role": "assistant", "content": "Entertainment"}]}
+{"messages": [{"role": "user", "content": "Transaction: Zelle Payment To Aaron Jpm 99 An 0 Yeui, 5.0"}, {"role": "assistant", "content": "Entertainment"}]}
+{"messages": [{"role": "user", "content": "Transaction: Uber *Trip San Francisco CA Card, 21.99"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: Ubr* Pending.Uber.CO San Francisco CA, 20.92"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: Cash App*Blake Coppe San Francisco CA, 125.0"}, {"role": "assistant", "content": "Entertainment"}]}
+{"messages": [{"role": "user", "content": "Transaction: Zelle Payment To Mukul 2196 44961 13, 8.0"}, {"role": "assistant", "content": "Entertainment"}]}
+{"messages": [{"role": "user", "content": "Transaction: Lyft *3 Rides 09-0 Help.Lyft.Com CA Card, 49.14"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: Uber *Trip San Francisco CA Card, 17.93"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: Lyft *1 Ride 09-09 Help.Lyft.Com CA Card, 10.95"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: Lyft *1 Ride 09-10 Help.Lyft.Com CA Card, 18.67"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: Zelle Payment To Nick Oceanview 2203 03224 08, 40.0"}, {"role": "assistant", "content": "Rent"}]}
+{"messages": [{"role": "user", "content": "Transaction: Zelle Payment To Aaron Jpm 99 Ankkv 5 F, 50.0"}, {"role": "assistant", "content": "Rent"}]}
+{"messages": [{"role": "user", "content": "Transaction: Ubr* Pending.Uber.CO San Francisco CA, 12.94"}, {"role": "assistant", "content": "Automotive/Gas"}]}
