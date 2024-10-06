@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, get_flashed_messages
 import os
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -86,6 +86,8 @@ async def specific():
         category = request.args.get('category')
         global transaction_data
         tsac_data = transaction_data[f"{category}_transactions"]
+        if not tsac_data:
+            return redirect(url_for('home'))
         for tsac in tsac_data:
             tsac['description'] = await extractCo(tsac['description'], openai)
         tip = await bBotTip(tsac, openai)
@@ -129,6 +131,7 @@ def upload_file():
         collection.insert_many(parsed_transactions)
         print(f"Inserted {len(parsed_transactions)} transactions into MongoDB.")
         flash(f'File {file.filename} successfully uploaded!', 'success')
+        messages = get_flashed_messages()
         return redirect(url_for('home'))
 
 @app.route('/MotionFinance/login', methods=['POST'])

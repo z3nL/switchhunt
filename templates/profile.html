@@ -11,7 +11,7 @@
     <div class="sidebar">
         <div class="logo"></div>
         <ul class="menu">
-            <li class="active">
+            <li>
                 <a href="/test-connection">
                     <i class="fas fa-dashboard"></i>
                     <span>Dashboard</span>
@@ -23,7 +23,7 @@
                     <span>BudgetBot</span>
                 </a>
             </li>
-            <li>
+            <li class="active">
                 <a href="/test-connection">
                     <i class="fas fa-user"></i>
                     <span>Profile</span>
@@ -41,7 +41,7 @@
     <div class="main--content">
         <div class="upload-container">
             <div class="upload-box light-blue">
-                <h2>Currently signed into: {{username}}</h2>
+                <h2>Currently signed into: {{username | capitalize}}</h2>
                 <form action="/upload" method="POST" enctype="multipart/form-data">
                     <div class="input-group">
                         <label for="file">Upload new bank statement (PDF):</label>
