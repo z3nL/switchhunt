@@ -133,10 +133,12 @@ pie_data = df.groupby('transaction_type')['amount'].sum()
 
 # Create a pie chart
 plt.figure(figsize=(8, 6))
-plt.pie(pie_data, labels=pie_data.index, autopct='%1.1f%%', startangle=140)
-plt.title('Transaction Amounts by Type')
+# Set font properties
+font_properties = {'weight': 'bold', 'size': 12}  # Bold font
+
+# Create the pie chart without percentages
+plt.pie(pie_data, labels=pie_data.index, labeldistance=1.1, startangle=140, textprops=font_properties)
+plt.title('Transaction Amounts by Type', fontsize=14, fontweight='bold')  # Bold title
 plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular
 plt.show()
-
-
 
