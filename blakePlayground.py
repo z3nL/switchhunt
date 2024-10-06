@@ -126,7 +126,7 @@ df = pd.DataFrame(data_list)
 '''---------------------------------------------------PIE CHART---------------------------------------------------'''
 
 
-def create_pie(dataframe, exclude_categories=None):
+def create_pie(dataframe, exclude_categories=None, output_file="pie_chart.png"):
     # Group by transaction type and sum the amounts
     pie_data = dataframe.groupby('transaction_type')['amount'].sum()
 
@@ -148,7 +148,12 @@ def create_pie(dataframe, exclude_categories=None):
     plt.pie(pie_data, labels=pie_data.index, labeldistance=1.1, startangle=140, textprops=font_properties)
     plt.title('Transaction Amounts by Type', fontsize=14, fontweight='bold')  # Bold title
     plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular
+
+    # Save the pie chart as a PNG file
+    plt.savefig(output_file, format='png', bbox_inches='tight')
+
+    # Show the pie chart
     plt.show()
 
 
-create_pie(df, exclude_categories=[])
+create_pie(df, exclude_categories=[], output_file="my_pie_chart.png")
