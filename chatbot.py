@@ -41,41 +41,46 @@ def filter_transactions(user_input, transactions):
     
     return relevant_transactions
 
-# Function to generate chatbot response with all filtered transactions
-def chatbot_response(conversation_history, user_input, transactions):
+# Function to generate chatbot response with filtered transactions
+def chatbot_response(conversation_history, user_input, transactions, start_index=0, items_per_page=5):
     # Filter transactions based on the user input
     relevant_transactions = filter_transactions(user_input, transactions)
     
-    # Convert the relevant transactions into a summary string
+    # Paginate transactions, showing a subset of transactions at a time
     if relevant_transactions:
-        transactions_info = "\n".join([f"Transaction: {t['messages'][0]['content']}, Type: {t['messages'][1]['content']}" for t in relevant_transactions])
+        paginated_transactions = relevant_transactions[start_index:start_index + items_per_page]
+        transactions_info = "\n".join([f"Transaction: {t['messages'][0]['content']}, Type: {t['messages'][1]['content']}" for t in paginated_transactions])
     else:
         transactions_info = "No relevant transactions found."
-
-    # Add the current user input to the conversation history
+    
+    # Add user input to conversation history
     conversation_history.append({"role": "user", "content": user_input})
 
-    # Prepare a system message with all the relevant transactions
-    system_message = {"role": "system", "content": f"Here are all the relevant transactions: {transactions_info}"}
+    # Prepare system message with relevant transactions
+    system_message = {"role": "system", "content": f"Here are some relevant transactions: {transactions_info}"}
 
     try:
-        # Generate the final chatbot response with a large enough token limit
+        # Generate the final chatbot response
         final_response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=conversation_history + [system_message],
-            max_tokens=2048,  # Set max tokens high to return as many transactions as possible
+            max_tokens=500,  # Increase max tokens to handle larger responses
             temperature=0.7
         )
         
-        # Add the bot's response to the conversation history
+        # Add bot's response to the conversation history
         bot_message = final_response['choices'][0]['message']['content']
         conversation_history.append({"role": "assistant", "content": bot_message})
         
-        return bot_message
+        # Check if more transactions are available and prompt the user
+        if len(relevant_transactions) > start_index + items_per_page:
+            bot_message += "\n\nWould you like to see more transactions? (yes/no)"
+
+        return bot_message, start_index + items_per_page if len(relevant_transactions) > start_index + items_per_page else None
     
     except Exception as e:
         print(f"Error calling OpenAI API: {e}")
-        return "Sorry, something went wrong when trying to process your request."
+        return "Sorry, something went wrong when trying to process your request.", None
 
 if __name__ == "__main__":
     # Load the transactions from the JSONL file
@@ -88,6 +93,8 @@ if __name__ == "__main__":
     
     # Maintain conversation history
     conversation_history = [{"role": "system", "content": "You are a helpful assistant."}]
+    start_index = 0
+    items_per_page = 5
 
     # Proceed with chatbot interactions
     print("Chatbot is ready! Type 'exit' to end.")
@@ -96,6 +103,14 @@ if __name__ == "__main__":
         if user_input.lower() == 'exit':
             break
         
-        # Pass the conversation history, user input, and transactions to the chatbot response function
-        bot_response = chatbot_response(conversation_history, user_input, transactions)
+        # Pass conversation history, user input, and transactions to the chatbot response function
+        bot_response, next_start_index = chatbot_response(conversation_history, user_input, transactions, start_index, items_per_page)
         print(f"Bot: {bot_response}")
+        
+        # Handle pagination if more transactions are available
+        if next_start_index:
+            more_input = input("You: ")
+            if more_input.lower() == 'yes':
+                start_index = next_start_index  # Continue showing the next set of transactions
+            else:
+                start_index = 0  # Reset pagination
