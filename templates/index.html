@@ -45,7 +45,8 @@
         </div>
 
         <div class="card-container">
-            <h3 class="main--title">This Month's Spending</h3>
+            <h3 class="main--title">Hello, {{username}}</h3>
+            <h3 class="main--title">This Month's Spending Report</h3>
             <img src = "/static/images/financepie.png">
             <div class="card--wrapper">
                 <a href="/specific?category=Automotive/Gas" class="card-link">
@@ -124,11 +125,6 @@
         </div>
         <div class="tabular--wrapper">
             <h3 class="main--title">All Transactions</h3>
-            <select id="tableToggle" onchange="toggleTable()">
-                <option value="hide">Select an option</option>
-                <option value="show">Show Transactions</option>
-                <option value="hide">Hide Transactions</option>
-            </select>
             <div class="table-container">
                 <table id="transactionTable">
                     <thead>
@@ -153,19 +149,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function toggleTable() {
-            const dropdown = document.getElementById('tableToggle');
-            const table = document.getElementById('transactionTable');
-    
-            if (dropdown.value === 'show') {
-                table.style.display = 'table'; // Show the table
-            } else {
-                table.style.display = 'none'; // Hide the table
-            }
-        }
-    </script>
 
 </body>
 </html>

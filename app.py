@@ -8,6 +8,7 @@ from pymongo import MongoClient
 import pandas as pd
 from helpers import create_pie
 from helpers import extractCo
+from helpers import bBotTip
 import openai
 
 # Set up app, OpenAI, and MongoDB connection
@@ -55,15 +56,17 @@ def home():
 @app.route('/specific')
 async def specific():
     if ('active' in session and session['active'] == 1):
+        username = session['username']
         category = request.args.get('category')
         tsac_data = session['transaction_data'][f"{category}_transactions"]
         for tsac in tsac_data:
             tsac['description'] = await extractCo(tsac['description'], openai)
+        tip = await bBotTip(tsac, openai)
         tsac_total = session['transaction_totals'][category]
         df = pd.DataFrame(tsac_data)
         await create_pie(df, 'description', exclude_categories=[], output_file="./static/images/specpie.png")
-        return render_template('specific.html', tsac_data=tsac_data, category=category, \
-                                                tsac_total=tsac_total)
+        return render_template('specific.html', tsac_data=tsac_data, category=category, username=username,\
+                                                tip=tip, tsac_total=tsac_total)
     else:
         return redirect(url_for('loginpg'))
 

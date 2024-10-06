@@ -82,7 +82,7 @@
   .btn {
     width: 100%;
     padding: 10px;
-    background-color: rgb(0, 0, 153);
+    background-color: rgba(42, 197, 135, 0.997);
     color: white;
     border: none;
     border-radius: 4px;
@@ -91,5 +91,5 @@
   }
   
   .btn:hover {
-    background-color: rgb(0, 0, 102);
+    background-color: rgb(33, 156, 107);
   }

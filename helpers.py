@@ -51,3 +51,31 @@ async def extractCo(description, openai):
     )
     response = completion['choices'][0]['message']['content'].strip()
     return response
+
+# Use ChatGPT to analyze transaction sets and return financial management tips
+async def bBotTip(transaction_set, openai):
+    completion = await openai.ChatCompletion.acreate(
+        model="gpt-3.5-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": (
+                    "You are an expert financial advisor. You analyze transaction histories to identify patterns,"
+                    " habits, and behaviors that can help optimize personal finances, reduce unnecessary expenses,"
+                    " and improve saving strategies."
+                )
+            },
+            {
+                "role": "user",
+                "content": (
+                    f"Given the following set of bank transactions: '{transaction_set}',"
+                    " identify any potential spending patterns, overspending habits, or areas"
+                    " where I can save more. Provide **one actionable financial tip**"
+                    " that could help me manage my money more effectively"
+                    " in **TWO SENTENCES OR LESS**."
+                )
+            }
+        ]
+    )
+    response = completion['choices'][0]['message']['content'].strip()
+    return response
