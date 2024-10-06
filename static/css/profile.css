@@ -1,0 +1,95 @@
+/* Light and Dark Color Definitions */
+.light-yellow {
+    background: rgb(255, 255, 204);
+  }
+  
+  .light-red {
+    background: rgb(255, 204, 204);
+  }
+  
+  .light-purple {
+    background: rgb(229, 204, 255);
+  }
+  
+  .light-blue {
+    background: rgb(204, 229, 255);
+  }
+  
+  .dark-yellow {
+    background: rgb(204, 204, 0);
+  }
+  
+  .dark-red {
+    background: rgb(204, 0, 0);
+  }
+  
+  .dark-purple {
+    background: rgb(102, 0, 204);
+  }
+  
+  .dark-blue {
+    background: rgb(0, 0, 153);
+  }
+  
+  /* General Styles */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .upload-box {
+    width: 350px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+    margin-right: 25px;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(42, 197, 135, 0.997);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .btn:hover {
+    background-color: rgb(33, 156, 107);
+  }

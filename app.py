@@ -70,6 +70,34 @@ async def specific():
     else:
         return redirect(url_for('loginpg'))
 
+# Profile/Upload page
+@app.route('/MotionFinance/profile')
+async def profile():
+    if ('active' in session and session['active'] == 1):
+        username=session['username']
+        return render_template('profile.html', username=username)
+    else:
+        return redirect(url_for('loginpg'))
+
+# Upload files
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        flash('No file part', 'error')
+        return redirect(request.url)
+    
+    file = request.files['file']
+    
+    if file.filename == '':
+        flash('No selected file', 'error')
+        return redirect(request.url)
+    
+    if file:
+        filepath = os.path.join('./static/uploads', "newstatement")
+        file.save(filepath)
+        flash(f'File {file.filename} successfully uploaded!', 'success')
+        return redirect(url_for('upload_file'))
+
 @app.route('/MotionFinance/login', methods=['POST'])
 async def signIn():
     if ('active' in session and session['active'] == 1):
