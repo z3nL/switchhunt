@@ -1,9 +1,10 @@
-import matplotlib.pyplot as plt
 import openai
 import re
 import pdfplumber
 import json
 import openai
+import plotly.express as px
+import kaleido
 
 # Function to clean extracted text from PDF
 def clean_extracted_text(text):
@@ -86,8 +87,14 @@ def parse_pdf_and_create_jsonl(file_path):
 
 
 async def create_pie(dataframe, identifier, exclude_categories=None, output_file="pie_chart.png"):
+    if identifier not in dataframe.columns:
+        print(f"Error: The identifier '{identifier}' is not a column in the dataframe.")
+        return
+    else:
+        print(f"valid identifier!")
+    
     # Group by transaction type and sum the amounts
-    pie_data = dataframe.groupby(identifier)['amount'].sum()
+    pie_data = dataframe.groupby(identifier)['amount'].sum().reset_index()
 
     # Exclude specified categories if provided
     if exclude_categories:
@@ -98,17 +105,16 @@ async def create_pie(dataframe, identifier, exclude_categories=None, output_file
         print("No data available to display.")
         return
 
-    # Create a pie chart
-    plt.figure(figsize=(8, 6))
-    # Set font properties
-    font_properties = {'weight': 'bold', 'size': 12}  # Bold font
-
-    # Create the pie chart without percentages
-    plt.pie(pie_data, labels=pie_data.index, labeldistance=1.1, startangle=140, textprops=font_properties)
-    plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular
-
-    # Save the pie chart as a PNG file
-    plt.savefig(output_file, format='png', bbox_inches='tight')
+    # Create the pie chart using Plotly
+    fig = px.pie(
+        pie_data,
+        names=identifier,  # Category labels
+        values='amount',  # Values for pie chart
+        title='',  # Chart title
+    )
+     
+    # Save the pie chart as a png with kaleido
+    fig.write_image(output_file)
     
 # Use ChatGPT to extract the company name out of a transaction description
 async def extractCo(description, openai):
