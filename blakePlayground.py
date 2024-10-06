@@ -87,7 +87,7 @@ def is_valid_transaction(description, amount):
 transactions = []
 
 # Parse transactions from PDF
-file_paths = ['20240914-statements-8356-.pdf']  # List of your PDF files
+file_paths = ['bankstatement.pdf']  # List of your PDF files
 for file_path in file_paths:
     parse_pdf_transactions(file_path, transactions)
 
@@ -125,7 +125,6 @@ data_list = []  # List to store the data
 for document in documents:
     data_list.append(document)  # Append each document to the list
 df = pd.DataFrame(data_list)
-
 
 '''---------------------------------------------------PIE CHART---------------------------------------------------'''
 # Group by transaction type and sum the amounts
