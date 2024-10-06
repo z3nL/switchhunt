@@ -24,6 +24,7 @@ db = client['UserInfo']
 logins = db['logins']
 allTsacs = []
 tsac_data = []
+transaction_data = {}; transaction_totals = {}
 
 # Default -> redir to login
 @app.route('/')
@@ -40,12 +41,38 @@ def loginpg():
 
 # Home page
 @app.route('/MotionFinance/home')
-def home():
+async def home():
     if ('active' in session and session['active'] == 1):
         username = session['username']
-        transaction_data = session['transaction_data']
-        transaction_totals = session['transaction_totals']
+        
+        db = client['Learning']
+        entries = db['New2']
+        ts_data = {}; ts_totals = {}
+        trTypes = ["Automotive/Gas", "Entertainment", "Rent/Utility", "Food", "Supplies", "Medical"]
+        for type in trTypes:
+            transactions = list(entries.find({"transaction_type":type}))
+            # Convert ObjectId to string and store transactions
+            ts_data[f'{type}_transactions'] = [
+                {**transaction, "_id": str(transaction["_id"])} for transaction in transactions
+            ]
+            total = 0
+            for transaction in ts_data[f'{type}_transactions']:
+                total += transaction['amount']
+            ts_totals[f'{type}'] = round(total, 2)
+        global transaction_data; global transaction_totals
+        transaction_data = ts_data; transaction_totals = ts_totals
+        #session['transaction_data'] = transaction_data
+        #session['transaction_totals'] = transaction_totals
+        tsacs = list(entries.find().sort("date", -1))
         global allTsacs
+        allTsacs =  [
+            {**tsac, "_id": str(tsac["_id"])} for tsac in tsacs
+        ]
+        df = pd.DataFrame(allTsacs)
+        await create_pie(df, 'transaction_type', exclude_categories=[], output_file="./static/images/financepie.png")
+        
+        #ts_data = session['transaction_data']
+        #ts_totals = session['transaction_totals'] global allTsacs transaction_data transaction_totals
         return render_template('index.html', username=username, transaction_data=transaction_data, \
                                             transaction_totals=transaction_totals, allTsacs=allTsacs)
     else:
@@ -57,11 +84,13 @@ async def specific():
     if ('active' in session and session['active'] == 1):
         username = session['username']  
         category = request.args.get('category')
-        tsac_data = session['transaction_data'][f"{category}_transactions"]
+        global transaction_data
+        tsac_data = transaction_data[f"{category}_transactions"]
         for tsac in tsac_data:
             tsac['description'] = await extractCo(tsac['description'], openai)
         tip = await bBotTip(tsac, openai)
-        tsac_total = session['transaction_totals'][category]
+        global transaction_totals
+        tsac_total = transaction_totals[category]
         df = pd.DataFrame(tsac_data)
         await create_pie(df, 'description', exclude_categories=[], output_file="./static/images/specpie.png")
         return render_template('specific.html', tsac_data=tsac_data, category=category, username=username,\
@@ -100,13 +129,13 @@ def upload_file():
         collection.insert_many(parsed_transactions)
         print(f"Inserted {len(parsed_transactions)} transactions into MongoDB.")
         flash(f'File {file.filename} successfully uploaded!', 'success')
-        return redirect(url_for('profile'))
+        return redirect(url_for('home'))
 
 @app.route('/MotionFinance/login', methods=['POST'])
 async def signIn():
     if ('active' in session and session['active'] == 1):
         return redirect(url_for('home'))
-    
+  
     username = request.form['username']
     password = request.form['password']
 
@@ -116,30 +145,7 @@ async def signIn():
     if (user and user['password'] == password):
         session['active'] = 1
         session['username'] = username
-        
-        db = client['Learning']
-        entries = db['Learning_Collection']
-        transaction_data = {}; transaction_totals = {}
-        trTypes = ["Automotive/Gas", "Entertainment", "Rent/Utility", "Food", "Supplies", "Medical"]
-        for type in trTypes:
-            transactions = list(entries.find({"transaction_type":type}))
-            # Convert ObjectId to string and store transactions
-            transaction_data[f'{type}_transactions'] = [
-                {**transaction, "_id": str(transaction["_id"])} for transaction in transactions
-            ]
-            total = 0
-            for transaction in transaction_data[f'{type}_transactions']:
-                total += transaction['amount']
-            transaction_totals[f'{type}'] = round(total, 2)
-        session['transaction_data'] = transaction_data
-        session['transaction_totals'] = transaction_totals
-        tsacs = list(entries.find().sort("date", -1))
-        global allTsacs
-        allTsacs =  [
-            {**tsac, "_id": str(tsac["_id"])} for tsac in tsacs
-        ]
-        df = pd.DataFrame(allTsacs)
-        await create_pie(df, 'transaction_type', exclude_categories=[], output_file="./static/images/financepie.png")
+        session['password'] = password
         
         return redirect(url_for('home'))
     else:
@@ -154,6 +160,7 @@ def logout():
     try:
         os.remove("./static/images/financepie.png")
         os.remove("./static/images/specpie.png")
+        os.remove("./static/uploads/newstatement.pdf")
     except FileNotFoundError:
         pass  
     return redirect(url_for('loginpg'))  
