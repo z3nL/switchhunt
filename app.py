@@ -17,6 +17,8 @@ if not load_dotenv():
 database_url = os.getenv('DATABASE_URL')
 client = MongoClient(database_url)
 db = client['UserInfo']
+logins = db['logins']
+allTsacs = []
 
 # Default -> redir to login
 @app.route('/')
@@ -35,7 +37,12 @@ def loginpg():
 @app.route('/MotionFinance/home')
 def home():
     if ('active' in session and session['active'] == 1):
-        return render_template('index.html')
+        username = session['username']
+        transaction_data = session['transaction_data']
+        transaction_totals = session['transaction_totals']
+        global allTsacs
+        return render_template('index.html', username=username, transaction_data=transaction_data, \
+                                            transaction_totals=transaction_totals, allTsacs=allTsacs)
     else:
         return redirect(url_for('loginpg'))
 
@@ -45,14 +52,44 @@ async def signIn():
     password = request.form['password']
 
     # TODO Query the database!!
-    if (username == "motion" and password == "motion"):
+    query = {"username":username}
+    user = logins.find_one(query)
+    if (user and user['password'] == password):
         session['active'] = 1
+        session['username'] = username
+        
+        db = client['Learning']
+        entries = db['Learning_Collection']
+        transaction_data = {}; transaction_totals = {}
+        trTypes = ["Automotive/Gas", "Entertainment", "Rent/Utilities", "Food", "Supplies", "Medical"]
+        for type in trTypes:
+            transactions = list(entries.find({"transaction_type":type}))
+            # Convert ObjectId to string and store transactions
+            transaction_data[f'{type}_transactions'] = [
+                {**transaction, "_id": str(transaction["_id"])} for transaction in transactions
+            ]
+            total = 0
+            for transaction in transaction_data[f'{type}_transactions']:
+                total += transaction['amount']
+            transaction_totals[f'{type}'] = round(total, 2)
+        session['transaction_data'] = transaction_data
+        session['transaction_totals'] = transaction_totals
+        tsacs = list(entries.find().sort("date", -1))
+        global allTsacs
+        allTsacs =  [
+            {**tsac, "_id": str(tsac["_id"])} for tsac in tsacs
+        ]
+        
         return redirect(url_for('home'))
     else:
         flash('Incorrect credentials!', 'error')
         
     return redirect(url_for('loginpg'))
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('loginpg'))  
 
 # Connection testing
 @app.route('/test-connection')
