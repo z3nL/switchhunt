@@ -150,4 +150,5 @@ def create_pie(dataframe, exclude_categories=None):
     plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular
     plt.show()
 
+
 create_pie(df, exclude_categories=[])
