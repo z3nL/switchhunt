@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="stylelogin.css">
+    <title>Motion Finance</title>
+    <link rel="stylesheet" href="/static/css/stylelogin.css">
 </head>
 <body>
     <div class="login-container">
         <div class="login-box light-blue">
-            <h2>Login</h2>
-            <form action="/login" method="POST">
+            <h2>Welcome to Motion Finance</h2>
+            <form action="#" method="POST">
                 <div class="input-group">
                     <label for="username">Username:</label>
                     <input type="text" id="username" name="username" required>
@@ -19,8 +19,21 @@
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                <button type="submit" class="btn dark-blue">Login</button>
+                <button type="submit" class="btn dark-blue">Log In</button>
             </form>
+
+            {% with messages = get_flashed_messages(with_categories=True) %}
+			{% if messages %}
+			  <div class="flash-messages">
+				{% for category, message in messages %}
+				  <div class="alert {{ category }}">
+					{{ message }}
+				  </div>
+				{% endfor %}
+			  </div>
+			{% endif %}
+		    {% endwith %}
+
         </div>
     </div>
 </body>

@@ -18,16 +18,41 @@ database_url = os.getenv('DATABASE_URL')
 client = MongoClient(database_url)
 db = client['UserInfo']
 
-# Home page redirect
+# Default -> redir to login
 @app.route('/')
-def login():
-    return render_template('login.html')
+def default():
+    if ('active' in session and session['active'] == 1):
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('loginpg'))
 
+# Login page
+@app.route('/MotionFinance/login')
+def loginpg():
+    return render_template('login.html')
 
 # Home page
 @app.route('/MotionFinance/home')
 def home():
-    return render_template('index.html')
+    if ('active' in session and session['active'] == 1):
+        return render_template('index.html')
+    else:
+        return redirect(url_for('loginpg'))
+
+@app.route('/MotionFinance/login', methods=['POST'])
+async def signIn():
+    username = request.form['username']
+    password = request.form['password']
+
+    # TODO Query the database!!
+    if (username == "motion" and password == "motion"):
+        session['active'] = 1
+        return redirect(url_for('home'))
+    else:
+        flash('Incorrect credentials!', 'error')
+        
+    return redirect(url_for('loginpg'))
+
 
 # Connection testing
 @app.route('/test-connection')
@@ -44,4 +69,4 @@ def test_connection():
 # Run app
 if __name__ == "__main__":
     app.secret_key = os.urandom(24)
-    app.run(debug=True)
+    app.run()
