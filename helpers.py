@@ -4,7 +4,6 @@ import pdfplumber
 import json
 import openai
 import plotly.express as px
-import kaleido
 
 # Function to clean extracted text from PDF
 def clean_extracted_text(text):

@@ -5,7 +5,6 @@ from pymongo import MongoClient
 import pandas as pd
 from helpers import create_pie
 from helpers import extractCo
-import chatbot
 from helpers import bBotTip
 from helpers import parse_pdf_and_create_jsonl
 import openai
