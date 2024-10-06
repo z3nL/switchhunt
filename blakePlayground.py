@@ -1,6 +1,7 @@
 import re
 import pdfplumber
 import pandas as pd
+import ssl
 import matplotlib.pyplot as plt
 from pymongo import MongoClient
 import os
