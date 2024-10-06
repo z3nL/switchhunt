@@ -16,15 +16,16 @@ if not load_dotenv():
     print("---\nNo env file!\n---\n")
 database_url = os.getenv('DATABASE_URL')
 client = MongoClient(database_url)
-db = client['Squad']
+db = client['UserInfo']
 
 # Home page redirect
 @app.route('/')
 def home():
     return redirect(url_for('motion'))
 
+
 # Home page
-@app.route('/MotionBank/home')
+@app.route('/MotionFinance/home')
 def motion():
     return render_template('index.html')
 
@@ -34,26 +35,11 @@ def test_connection():
     try:
         # Check MongoDB server information
         server_info = client.server_info()  # Will throw an exception if not connected
-        return send_file('static/images/preston.jpeg', mimetype='image/jpeg')
+        print("MongoDB: We're good!")
+        return redirect(url_for('motion'))
     except Exception as e:
-        return f"Failed to connect to MongoDB Atlas: {e}"
-
-# DB Addition Test
-@app.route('/test-db')
-def test_db():
-    try:
-        # Test connection by inserting a document
-        db.collection_name.insert_one({"test": "success"})
-        
-        # Define the correct image path
-        image_path = "static/images/preston.jpeg"
-        
-        # Return the image file
-        return send_file(image_path, mimetype='image/jpeg')
-    
-    except Exception as e:
-        # Return error message if connection fails
-        return f"Failed to connect to MongoDB Atlas: {e}"
+        print (f"Failed to connect to MongoDB Atlas: {e}")
+        return redirect(url_for('motion'))
 
 # Run app
 if __name__ == "__main__":
