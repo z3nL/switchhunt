@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import openai
 import re
 import pdfplumber
-from dotenv import load_dotenv
 import json
 import openai
 

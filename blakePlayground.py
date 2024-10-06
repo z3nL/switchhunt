@@ -6,7 +6,6 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 import json
 import openai
-import time
 
 # Load environment variables
 load_dotenv()
