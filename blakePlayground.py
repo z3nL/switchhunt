@@ -1,7 +1,6 @@
 import re
 import pdfplumber
 import pandas as pd
-import ssl
 import matplotlib.pyplot as plt
 from pymongo import MongoClient
 import os
@@ -9,8 +8,6 @@ from dotenv import load_dotenv
 
 '''-------------------------------------------INPUT OUTPUT---------------------------------------------------'''
 choiceDB = input("Upload to DB? Y = Yes: ")
-
-
 
 
 # Function to clean the extracted text
@@ -127,8 +124,6 @@ for document in documents:
 df = pd.DataFrame(data_list)
 
 '''---------------------------------------------------PIE CHART---------------------------------------------------'''
-'''---------------------------------------------------PIE CHART---------------------------------------------------'''
-import matplotlib.pyplot as plt
 
 
 def create_pie(dataframe, exclude_categories=None):
