@@ -9,6 +9,7 @@ import pandas as pd
 from helpers import create_pie
 from helpers import extractCo
 from helpers import bBotTip
+from helpers import parse_pdf_and_create_jsonl
 import openai
 
 # Set up app, OpenAI, and MongoDB connection
@@ -95,8 +96,13 @@ def upload_file():
     if file:
         filepath = os.path.join('./static/uploads', "newstatement")
         file.save(filepath)
+        parsed_transactions = parse_pdf_and_create_jsonl(filepath)
+        db = client['Learning']
+        collection = db["New2"]
+        collection.insert_many(parsed_transactions)
+        print(f"Inserted {len(parsed_transactions)} transactions into MongoDB.")
         flash(f'File {file.filename} successfully uploaded!', 'success')
-        return redirect(url_for('upload_file'))
+        return redirect(url_for('profile'))
 
 @app.route('/MotionFinance/login', methods=['POST'])
 async def signIn():

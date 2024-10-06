@@ -1,21 +1,27 @@
-{"messages": [{"role": "user", "content": "Transaction: Lyft *2 Rides 08-2 Help.Lyft.Com CA Card, 36.54"}, {"role": "assistant", "content": "Automotive/Gas"}]}
-{"messages": [{"role": "user", "content": "Transaction: Uber *Trip San Francisco CA Card, 8.42"}, {"role": "assistant", "content": "Automotive/Gas"}]}
-{"messages": [{"role": "user", "content": "Transaction: Ubr* Pending.Uber.CO San Francisco CA, 33.28"}, {"role": "assistant", "content": "Automotive/Gas"}]}
-{"messages": [{"role": "user", "content": "Transaction: Ubr* Pending.Uber.CO San Francisco CA, 7.91"}, {"role": "assistant", "content": "Automotive/Gas"}]}
-{"messages": [{"role": "user", "content": "Transaction: Chegg *Order 855-440-1323 CA Card, 15.95"}, {"role": "assistant", "content": "Entertainment"}]}
-{"messages": [{"role": "user", "content": "Transaction: Lyft *2 Rides 08-2 Help.Lyft.Com CA Card, 32.74"}, {"role": "assistant", "content": "Automotive/Gas"}]}
-{"messages": [{"role": "user", "content": "Transaction: Spotify USA 877-7781 161 NY Card, 6.78"}, {"role": "assistant", "content": "Entertainment"}]}
-{"messages": [{"role": "user", "content": "Transaction: Lyft *2 Rides 08-3 Help.Lyft.Com CA Card, 36.7"}, {"role": "assistant", "content": "Automotive/Gas"}]}
-{"messages": [{"role": "user", "content": "Transaction: Zelle Payment To Aaron Jpm 99 An 0 Tnhz, 67.0"}, {"role": "assistant", "content": "Entertainment"}]}
-{"messages": [{"role": "user", "content": "Transaction: Zelle Payment To Aaron Jpm 99 An 0 Yeui, 5.0"}, {"role": "assistant", "content": "Entertainment"}]}
-{"messages": [{"role": "user", "content": "Transaction: Uber *Trip San Francisco CA Card, 21.99"}, {"role": "assistant", "content": "Automotive/Gas"}]}
-{"messages": [{"role": "user", "content": "Transaction: Ubr* Pending.Uber.CO San Francisco CA, 20.92"}, {"role": "assistant", "content": "Automotive/Gas"}]}
-{"messages": [{"role": "user", "content": "Transaction: Cash App*Blake Coppe San Francisco CA, 125.0"}, {"role": "assistant", "content": "Entertainment"}]}
-{"messages": [{"role": "user", "content": "Transaction: Zelle Payment To Mukul 2196 44961 13, 8.0"}, {"role": "assistant", "content": "Entertainment"}]}
-{"messages": [{"role": "user", "content": "Transaction: Lyft *3 Rides 09-0 Help.Lyft.Com CA Card, 49.14"}, {"role": "assistant", "content": "Automotive/Gas"}]}
-{"messages": [{"role": "user", "content": "Transaction: Uber *Trip San Francisco CA Card, 17.93"}, {"role": "assistant", "content": "Automotive/Gas"}]}
-{"messages": [{"role": "user", "content": "Transaction: Lyft *1 Ride 09-09 Help.Lyft.Com CA Card, 10.95"}, {"role": "assistant", "content": "Automotive/Gas"}]}
-{"messages": [{"role": "user", "content": "Transaction: Lyft *1 Ride 09-10 Help.Lyft.Com CA Card, 18.67"}, {"role": "assistant", "content": "Automotive/Gas"}]}
-{"messages": [{"role": "user", "content": "Transaction: Zelle Payment To Nick Oceanview 2203 03224 08, 40.0"}, {"role": "assistant", "content": "Rent"}]}
-{"messages": [{"role": "user", "content": "Transaction: Zelle Payment To Aaron Jpm 99 Ankkv 5 F, 50.0"}, {"role": "assistant", "content": "Rent"}]}
-{"messages": [{"role": "user", "content": "Transaction: Ubr* Pending.Uber.CO San Francisco CA, 12.94"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: MARATHON PETRO 1716 29 AVENTURA FL, 55.1"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: WHOLEFDS BIS 1009 6 AVENTURA FL, 85.79"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: PINOLANDIA 2 CORPORATION HOLLYWOOD FL, 46.01"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: FLD EARL OF SANDWICH OKEECHOBEE FL, 24.78"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: 1030 6 CAVA GAINESVILLE GAINESVILLE FL, 11.88"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: FIVE BELOW 6191 GAINESVILLE FL, 23.87"}, {"role": "assistant", "content": "Supplies"}]}
+{"messages": [{"role": "user", "content": "Transaction: GREYHOUND Los Angeles CA, 59.97"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: TST*EL INDIO MEXICAN RES Gainesville FL, 12.77"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: 1030 6 CAVA GAINESVILLE GAINESVILLE FL, 11.88"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: CHIPOTLE ONLINE CHIPOTLE.COM CA, 4.82"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: BROSKI VENDING ORLANDO FL, 2.6"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: Subway 6431 1 Weston FL, 14.73"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: CRUMBL WATERFORD LAKES 180-1410 1313 UT, 4.49"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: GREYHOUND Los Angeles CA, 29.98"}, {"role": "assistant", "content": "Automotive/Gas"}]}
+{"messages": [{"role": "user", "content": "Transaction: FIVE BELOW 6191 GAINESVILLE FL, 5.38"}, {"role": "assistant", "content": "Supplies"}]}
+{"messages": [{"role": "user", "content": "Transaction: TST*EL INDIO MEXICAN RES Gainesville FL, 17.48"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: ALDI 7410 9 GAINESVILLE GAINESVILLE FL, 2.99"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: CHICKEN SALAD CHICK 21 352-4372 200 FL, 2.68"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: WAWA 5385 GAINESVILLE FL, 6.71"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: McDonalds 1078 4 FORT LAUDERDA FL, 5.87"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: SQ *ELEGANT EATZ, INC. Miami Gardens FL, 19.26"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: CHEQ Easy Order - Section Miami Gardens FL, 20.51"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: TALLAHASSEE ORTHOPEDIC CL GAINESVILLE FL, 9.0"}, {"role": "assistant", "content": "Medical"}]}
+{"messages": [{"role": "user", "content": "Transaction: 1030 6 CAVA GAINESVILLE GAINESVILLE FL, 13.28"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: ZUPP WWW.ZUPP.COM FL, 6.99"}, {"role": "assistant", "content": "Entertainment"}]}
+{"messages": [{"role": "user", "content": "Transaction: TST*EL INDIO MEXICAN RES Gainesville FL, 14.59"}, {"role": "assistant", "content": "Food"}]}
+{"messages": [{"role": "user", "content": "Transaction: - 0 - - 0 - Purchases, 20.49"}, {"role": "assistant", "content": "Supplies"}]}
