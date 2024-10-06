@@ -132,6 +132,10 @@ a:hover {
 
 /* Card Container */ 
 .card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background:rgb(255, 255, 255);
   padding: 2rem;
   border-radius: 10px;
@@ -141,6 +145,7 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  margin-left: 5em;
 }
 .main--title {
   color: rgba(6, 7, 7, 0.997);
@@ -199,6 +204,24 @@ a:hover {
 
 }
 
+ /* Set a fixed height for the table container */
+ .table-container {
+  height: 300px; /* Adjust the height as needed */
+  overflow-y: auto; /* Enables vertical scrolling */
+}
+
+/* Make sure the table takes the full width of its container */
+#transactionTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Style for table header */
+#transactionTable thead th {
+  position: sticky;
+  top: 0;
+  background-color: rgba(42, 197, 135, 0.997);
+}
 
 /* Colors of CSS */
 .light-yellow {
