@@ -1,6 +1,7 @@
 import re
 import pdfplumber
 import pandas as pd
+from pymongo import MongoClient
 
 
 # Function to clean the extracted text
@@ -45,13 +46,10 @@ def parse_pdf_transactions(file_path, transactions):
             "amount": amount
         })
 
-
+'''----------------------------------------FILTER DATABASE-----------------------------------------------------------'''
 # Filter out invalid dates or unwanted descriptions like interest charges
 def is_valid_date(date):
     return bool(re.match(r'\d{2}/\d{2}', date))
-
-
-# Filter out transactions with unwanted descriptions (e.g., "Interest", "Fee", etc.)
 def is_valid_transaction(description):
     # List of keywords to exclude
     unwanted_keywords = ["Interest", "Fee", "Charge", "Balance Transfer", "Cash Advance", "- 0 -"]
@@ -74,3 +72,11 @@ df = pd.DataFrame(filtered_transactions)
 
 # Print the DataFrame
 print(df)
+'''------------------------------------------------------------------------------------------------------------------'''
+
+'''-------------------------------------------------SEND TO MONGO---------------------------------------------------'''
+client = MongoClient("mongodb://localhost:27017/")
+db = client["Squad"] #FIX
+collection = db["your_collection_name"]
+
+'''------------------------------------------------------------------------------------------------------------------'''
