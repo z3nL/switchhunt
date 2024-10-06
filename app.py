@@ -20,13 +20,13 @@ db = client['UserInfo']
 
 # Home page redirect
 @app.route('/')
-def home():
-    return redirect(url_for('motion'))
+def login():
+    return render_template('login.html')
 
 
 # Home page
 @app.route('/MotionFinance/home')
-def motion():
+def home():
     return render_template('index.html')
 
 # Connection testing
@@ -36,10 +36,10 @@ def test_connection():
         # Check MongoDB server information
         server_info = client.server_info()  # Will throw an exception if not connected
         print("MongoDB: We're good!")
-        return redirect(url_for('motion'))
+        return redirect(url_for('home'))
     except Exception as e:
         print (f"Failed to connect to MongoDB Atlas: {e}")
-        return redirect(url_for('motion'))
+        return redirect(url_for('home'))
 
 # Run app
 if __name__ == "__main__":
