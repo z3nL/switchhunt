@@ -87,7 +87,7 @@ def is_valid_transaction(description, amount):
 transactions = []
 
 # Parse transactions from PDF
-file_paths = ['CreditStatement.pdf', 'bankstatement.pdf','bankstatement2.pdf','bankstatement3.pdf','bankstatement4.pdf','bankstatement5.pdf','bankstatement6.pdf']  # List of your PDF files
+file_paths = ['20240914-statements-8356-.pdf']  # List of your PDF files
 for file_path in file_paths:
     parse_pdf_transactions(file_path, transactions)
 
@@ -133,62 +133,7 @@ pie_data = df.groupby('transaction_type')['amount'].sum()
 
 # Create a pie chart
 plt.figure(figsize=(8, 6))
-# Set font properties
-font_properties = {'weight': 'bold', 'size': 12}  # Bold font
-
-# Create the pie chart without percentages
-plt.pie(pie_data, labels=pie_data.index, labeldistance=1.1, startangle=140, textprops=font_properties)
-plt.title('Transaction Amounts by Type', fontsize=14, fontweight='bold')  # Bold title
+plt.pie(pie_data, labels=pie_data.index, autopct='%1.1f%%', startangle=140)
+plt.title('Transaction Amounts by Type')
 plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular
 plt.show()
-
-
-#machine learning start idk how to work this
-
-
-
-from pymongo import MongoClient
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.preprocessing import LabelEncoder
-import pandas as pd
-
-if not load_dotenv():
-    print("---\nNo env file!\n---\n")
-database_url = os.getenv('DATABASE_URL')
-client = MongoClient(database_url)
-db = client['learning']
-collection = ['learning_collection']
-
-df['date'] = pd.to_datetime(df['date'], format='%m/%d')  # Assuming no year info, use month/day
-df['day'] = df['date'].dt.day
-df['month'] = df['date'].dt.month
-df['day_of_week'] = df['date'].dt.dayofweek  # 0 = Monday, 6 = Sunday
-
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-
-vectorizer = TfidfVectorizer(max_features=500)  # Limit the number of features to avoid overfitting
-description_vectors = vectorizer.fit_transform(df['description'])
-
-from sklearn.preprocessing import StandardScaler
-
-scaler = StandardScaler()
-df['amount_normalized'] = scaler.fit_transform(df[['amount']])
-
-
-from sklearn.preprocessing import LabelEncoder
-
-label_encoder = LabelEncoder()
-df['transaction_type_encoded'] = label_encoder.fit_transform(df['transaction_type'])
-
-
-import pandas as pd
-
-# One-hot encode the 'transaction_type' column
-df_one_hot_encoded = pd.get_dummies(df, columns=['transaction_type'])
-
-# This will create separate binary columns for each unique value in 'transaction_type'
-print(df_one_hot_encoded.head())
-
-
