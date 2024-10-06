@@ -1,6 +1,7 @@
 import re
 import pdfplumber
 import pandas as pd
+import matplotlib.pyplot as plt
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
@@ -123,6 +124,18 @@ data_list = []  # List to store the data
 for document in documents:
     data_list.append(document)  # Append each document to the list
 df = pd.DataFrame(data_list)
+
+
+'''---------------------------------------------------PIE CHART---------------------------------------------------'''
+# Group by transaction type and sum the amounts
+pie_data = df.groupby('transaction_type')['amount'].sum()
+
+# Create a pie chart
+plt.figure(figsize=(8, 6))
+plt.pie(pie_data, labels=pie_data.index, autopct='%1.1f%%', startangle=140)
+plt.title('Transaction Amounts by Type')
+plt.axis('equal')  # Equal aspect ratio ensures the pie chart is circular
+plt.show()
 
 
 
