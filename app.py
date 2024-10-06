@@ -5,6 +5,7 @@ from pymongo import MongoClient
 import pandas as pd
 from helpers import create_pie
 from helpers import extractCo
+import chatbot
 from helpers import bBotTip
 from helpers import parse_pdf_and_create_jsonl
 import openai
@@ -15,7 +16,7 @@ app = Flask(__name__)
 if not load_dotenv():
     print("---\nNo env file!\n---\n")
     
-openai.api_key = os.getenv('OPENAI_API_KEY')
+chatbot.api_key = os.getenv('OPENAI_API_KEY')
 
 database_url = os.getenv('DATABASE_URL')
 client = MongoClient(database_url)
@@ -54,17 +55,15 @@ def home():
 @app.route('/specific')
 async def specific():
     if ('active' in session and session['active'] == 1):
-        username = session['username']
         category = request.args.get('category')
         tsac_data = session['transaction_data'][f"{category}_transactions"]
         for tsac in tsac_data:
-            tsac['description'] = await extractCo(tsac['description'], openai)
-        tip = await bBotTip(tsac, openai)
+            tsac['description'] = await extractCo(tsac['description'], chatbot)
         tsac_total = session['transaction_totals'][category]
         df = pd.DataFrame(tsac_data)
         await create_pie(df, 'description', exclude_categories=[], output_file="./static/images/specpie.png")
-        return render_template('specific.html', tsac_data=tsac_data, category=category, username=username,\
-                                                tip=tip, tsac_total=tsac_total)
+        return render_template('specific.html', tsac_data=tsac_data, category=category, \
+                                                tsac_total=tsac_total)
     else:
         return redirect(url_for('loginpg'))
 
