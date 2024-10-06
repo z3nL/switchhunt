@@ -85,7 +85,7 @@ def is_valid_transaction(description, amount):
 transactions = []
 
 # Parse transactions from PDF
-file_paths = ['20240914-statements-8356-.pdf']  # List of your PDF files
+file_paths = ['CreditStatement.pdf', 'bankstatement.pdf','bankstatement2.pdf','bankstatement3.pdf','bankstatement4.pdf','bankstatement5.pdf','bankstatement6.pdf']  # List of your PDF files
 for file_path in file_paths:
     parse_pdf_transactions(file_path, transactions)
 
@@ -116,3 +116,53 @@ if filtered_transactions and choiceDB == 'Y':
     print(f"Inserted {len(filtered_transactions)} transactions into MongoDB.")
 else:
     print("No transactions to insert.")
+
+
+
+#machine learning start idk how to work this
+
+
+
+from pymongo import MongoClient
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import LabelEncoder
+import pandas as pd
+
+client = MongoClient('mongodb+srv://zen33:zen@squad.vab1r.mongodb.net/?retryWrites=true&w=majority&appName=Squad')
+db = client['learning']
+collection = ['learning_collection']
+
+df['date'] = pd.to_datetime(df['date'], format='%m/%d')  # Assuming no year info, use month/day
+df['day'] = df['date'].dt.day
+df['month'] = df['date'].dt.month
+df['day_of_week'] = df['date'].dt.dayofweek  # 0 = Monday, 6 = Sunday
+
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+vectorizer = TfidfVectorizer(max_features=500)  # Limit the number of features to avoid overfitting
+description_vectors = vectorizer.fit_transform(df['description'])
+
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+df['amount_normalized'] = scaler.fit_transform(df[['amount']])
+
+
+from sklearn.preprocessing import LabelEncoder
+
+label_encoder = LabelEncoder()
+df['transaction_type_encoded'] = label_encoder.fit_transform(df['transaction_type'])
+
+
+import pandas as pd
+
+# One-hot encode the 'transaction_type' column
+df_one_hot_encoded = pd.get_dummies(df, columns=['transaction_type'])
+
+# This will create separate binary columns for each unique value in 'transaction_type'
+print(df_one_hot_encoded.head())
+
+
+
